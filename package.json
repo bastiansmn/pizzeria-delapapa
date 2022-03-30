@@ -1,0 +1,22 @@
+{
+  "name": "pizzeria-delapapa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "nodemon main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gaufre.informatique.univ-paris-diderot.fr:somon/pizzeria-delapapa.git"
+  },
+  "author": "Bastian SOMON | Yani BOUANEM",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15",
+    "pg": "^8.7.3"
+  }
+}

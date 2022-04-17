@@ -1,37 +1,21 @@
-const render = (target, endpoint) => {
-   fetch(endpoint)
-      .then(response => response.text())
-      .then(data => {
-         console.log(data);
-         $(target).html(data);
-         window.location.hash = endpoint.replaceAll(/\/?.*\//gm, "");
-      });
+capitalize = (str) => {
+   return str[0].toUpperCase() + str.substring(1);
 }
 
 $(document).ready(() => {
-   console.log(window.location.hash);
-   if (window.location.hash) 
-      render(".main__content", `/components/${window.location.hash.replace("#", "")}`);
-   else 
-      render(".main__content", "/components/home");
-   $(".accueil").addClass("active");
-   
-   $(".accueil").click(() => {
-      $(".nav-link").removeClass("active");
-      $(".accueil").addClass("active");
-      render(".main__content", "/components/home");
+   const routes = [
+      "accueil",
+      "menu"
+   ];
+   // Instanciate main router
+   new Router(routes, ".main__content");
+   // Add routes to navbar
+   routes.forEach(route => {
+      $("#navbar")
+         .append(`
+            <li class="nav-item">
+               <a class="nav-link ${route}">${capitalize(route)}</a>
+            </li>`
+         );
    });
-
-   $(".menu").click(() => {
-      $(".nav-link").removeClass("active");
-      $(".menu").addClass("active");
-      render(".main__content", "/components/menu");
-   });
-
-   $(".contact").click(() => {
-      $(".nav-link").removeClass("active");
-      $(".contact").addClass("active");
-      render(".main__content", "/components/contact");
-   });
-
 });

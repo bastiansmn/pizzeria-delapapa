@@ -3,7 +3,9 @@ const render = (target, endpoint) => {
       .then(response => response.text())
       .then(data => {
          $(target).html(data);
-         window.location.hash = endpoint.replaceAll(/\/?.*\//gm, "");
+         const hash = endpoint.replaceAll(/\/?.*\//gm, "");
+         window.location.hash = hash;
+         $(`.${hash}`).addClass("active");
       });
 }
 
@@ -16,7 +18,6 @@ class Router {
          if (window.location.hash) {
             const hash = window.location.hash.replace("#", "");
             render(this.target, `${hash}`);
-            $(`.${hash}`).addClass("active");
          } else {
             render(this.target, `${this.routes[0]}`);
          }

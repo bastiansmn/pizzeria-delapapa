@@ -1,3 +1,23 @@
+:root {
+   --primary: #f77f00;
+   /* TODO */
+
+   --scrollbar-size: 4px;
+}
+
 a {
    cursor: pointer;
+}
+
+body {
+   overflow-y: scroll;
+}
+
+*::-webkit-scrollbar {
+   width: var(--scrollbar-size);
+   height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-thumb {
+   background: var(--orange);
 }

@@ -1,32 +1,39 @@
-const render = (target, endpoint) => {
-   fetch(`/components/${endpoint}`)
-      .then(response => response.text())
-      .then(data => {
-         $(target).html(data);
-         const hash = endpoint.replaceAll(/\/?.*\//gm, "");
-         window.location.hash = hash;
-         $(`.${hash}`).addClass("active");
-      });
+const render = (target, endpoint, hashChange=true) => {
+   return new Promise((resolve) => {
+      fetch(`/components/${endpoint}`)
+         .then(response => response.text())
+         .then(data => {
+            if (window.location.hash !== "#" + endpoint) {
+               $(target).html(data);
+               if (hashChange) window.location.hash = endpoint;
+               $(`.${endpoint}`).addClass("active");
+            }
+            resolve();
+         });
+   })
+   // TODO Handle serveur disconnect
 }
 
 class Router {
-   constructor(routes, target) {
+   constructor(routes, target, main=false) {
       this.routes = routes;
       this.target = target;
 
-      $(document).ready(() => {
-         if (window.location.hash) {
-            const hash = window.location.hash.replace("#", "");
-            render(this.target, `${hash}`);
-         } else {
-            render(this.target, `${this.routes[0]}`);
+      $(document).ready(async () => {
+         if (main) {
+            if (window.location.hash) {
+               const hash = window.location.hash.replace("#", "");
+               await render(this.target, `${hash}`);
+            } else {
+               await render(this.target, `${this.routes[0]}`);
+            }
          }
       
          this.routes.forEach(route => {
-            $(`.${route}`).on("click", () => {
+            $(`.${route}`).on("click", async () => {
                $(".nav-link").removeClass("active");
                $(`.${route}`).addClass("active");
-               render(this.target, route);
+               await render(this.target, route);
             });
          });
       });

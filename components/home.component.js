@@ -5,9 +5,7 @@ module.exports = (app, db) => {
       "/components/accueil",
       async (_req, res) => {
          const users = await userController.getUsers(db);
-         res.render("home", {
-            users
-         });
+         res.render("home", { users });
       }
    );
 }

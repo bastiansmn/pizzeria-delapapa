@@ -26,3 +26,5 @@ npm start
 
 ### Deploy the project
 Project is using express, so you just need to deploy it on an appropriate platform (Heroku, ...). 
+
+##

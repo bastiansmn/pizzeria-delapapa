@@ -27,4 +27,6 @@ npm start
 ### Deploy the project
 Project is using express, so you just need to deploy it on an appropriate platform (Heroku, ...). 
 
-##
+## setp the database
+In order to setup the database, from your project folder, you'll have to use the command "psql -d postgres ".
+After this, type in postgres "\i init.sql"

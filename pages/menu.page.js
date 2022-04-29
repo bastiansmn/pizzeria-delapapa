@@ -1,6 +1,6 @@
 module.exports = (app, db) => {
    app.get(
-      "/components/menu",
+      "/pages/menu",
       (_req, res) => {
          const menu = [
             {
@@ -24,7 +24,7 @@ module.exports = (app, db) => {
                price: "10€",
             },
          ]
-         res.render("menu", {
+         res.render("pages/menu", {
             menu
          });
       }

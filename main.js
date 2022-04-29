@@ -13,7 +13,10 @@ const dbConfig = require('./config/db.config');
 const db = new Client(dbConfig);
 db.connect();
 
-// Registering components
-require('./components')(app, db);
+// Require components
+require("./components")(app, db);
+
+// Registering pages
+require('./pages')(app, db);
 
 app.listen(process.env.PORT || 3000);

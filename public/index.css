@@ -21,3 +21,19 @@ body {
 *::-webkit-scrollbar-thumb {
    background: var(--orange);
 }
+
+button {
+   cursor: pointer;
+   outline: none;
+   border: none;
+   user-select: none;
+   transition: transform ease-in-out .2s;
+}
+
+button:focus {
+   outline: none;
+}
+
+button:hover {
+   transform: scale(1.1);
+}

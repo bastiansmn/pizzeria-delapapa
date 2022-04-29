@@ -8,10 +8,11 @@
    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
    <link rel="stylesheet" href="index.css">
    <link rel="stylesheet" href="css/home_style.css">
+   <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
    <div id="app">
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
          <div class="container">
             <a class="navbar-brand accueil"><img src="assets/logo.png" style="height: 70px"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,14 +28,22 @@
                   </li>
                </ul>
             </div>
+            <div id="cart" class="ml-2" style="position: relative; aspect-ratio: 1/1; height: 38px; cursor: pointer;">
+               <div class="cart__infos" style="height: 100%;">
+                  <img src="assets/cart.png" alt="Panier" style="height: 100%;">
+                  <div class="cart__size text-white bg-info rounded-circle d-flex align-items-center justify-content-center h-50 font-weight-bold" style="aspect-ratio: 1/1; position: absolute; bottom: 0; right: 0; font-size: 14px;">2</div>
+               </div>
+               <div class="cart__content"></div>
+            </div>
          </div>
       </nav>
-      <div class="main__content container-fluid"></div>
+      <div class="main__content container-fluid pt-5"></div>
    </div>
 
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   <script src="js/cart.js"></script>
    <script src="js/utils.js"></script>
    <script src="js/router.js"></script>
    <script src="js/pageRouter.js"></script>

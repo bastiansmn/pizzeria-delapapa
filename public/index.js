@@ -5,4 +5,6 @@ $(document).ready(() => {
       ".main__content"
    );
 
+   const cart = new Cart("#cart");
+
 });

@@ -7,8 +7,9 @@ class Cart {
    constructor(target) {
       this.#cart = [];
       this.#target = target;
-      // Add cart style
-      $(`${target}`).on("click", async event => {
+      
+      // Toggle cart and render component
+      $(target).on("click", async event => {
          event.stopPropagation();
          let temp = event.target;
          while (!temp.classList.contains("cart__content") && !temp.classList.contains("cart__infos")) {
@@ -26,7 +27,7 @@ class Cart {
       $(window).on("click", () => {
          this.showCart = false;
          $(".cart__content").html("");
-      })
+      });
    }
 
    addToCart = (item) => {
@@ -51,20 +52,34 @@ class Cart {
       return new Promise(resolve => {
          fetch("/components/cart", {
             method: "PUT",
-            body: {
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
                items: [
                   {
                      item_id: 1,
-                     name: "Salade",
+                     name: "Salade Caesar",
+                     image: "https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/side/salade-caesar.3774efa52bbe1f08d63ae78a0f672b11.1.jpg",
+                     quant: 1,
                      price: 6,
                   },
                   {
                      item_id: 2,
                      name: "Pizza 6 fromages",
-                     price: 12
+                     image: "https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/pizza/fromage.e70b59d7921e1113513460fbea3046df.1.jpg",
+                     quant: 2,
+                     price: 12,
+                  },
+                  {
+                     item_id: 3,
+                     name: "Orangina",
+                     image: "https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/drink/orangina-regular.4ba0ed03af7fad9fb7207d249a3d8128.1.jpg",
+                     quant: 1,
+                     price: 2,
                   }
                ]
-            }
+            })
          })
             .then(res => res.text())
             .then(res => {

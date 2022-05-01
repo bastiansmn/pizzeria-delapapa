@@ -4,24 +4,52 @@
 
    --scrollbar-size: 4px;
 }
-
-a {
-   cursor: pointer;
+*{
+   margin: 0;
+   padding: 0;
 }
 
-body {
-   overflow-y: scroll;
+body{
+   font-family: sans-serif;
 }
 
-*::-webkit-scrollbar {
-   width: var(--scrollbar-size);
-   height: var(--scrollbar-size);
+#nav-bar{
+   position: sticky;
+   top: 0;
+   z-index: 10;
 }
 
-*::-webkit-scrollbar-thumb {
-   background: var(--orange);
+.navbar{
+   padding: 0 !important;
 }
 
+.navbar a{
+   color: #fff;
+}
+
+.navbar-brand img{
+   height: 40px;
+   padding-left: 20px;
+}
+
+.navbar-nav li{
+   padding:0 10px;
+}
+
+.navbar-nav li a{
+   color: #fff !important;
+   font-weight: 600;
+   float: right;
+   text-align: left;
+}
+
+.fa-bars{
+   color: #fff;
+   font-size: 30px !important;
+}
+.navbar-toggler{
+   outline: none !important;
+}
 button {
    cursor: pointer;
    outline: none;

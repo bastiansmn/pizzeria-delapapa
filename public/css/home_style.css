@@ -5,93 +5,7 @@
     font-family: 'poppins',sans-serif;
 }
 
-section
-{
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    padding: 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f4f2eb;
-    transition: 0.5s;
-}
-
-header
-{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header .logo
-{
-    position: relative;
-    max-width: 80px;
-}
-
-header ul
-{
-    position: relative;
-    display: flex;
-}
-
-header ul li
-{
-    list-style: none;
-}
-
-header ul li a
-{
-    display: inline-block;
-    color: black;
-    font-weight: 400;
-    margin-left: 40px;
-    text-decoration: none;
-}
-
-.content
-{
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.content .textBox
-{
-    position: relative;
-    max-width: 600px;
-}
-
-.content .textBox h2
-{
-    color: black;
-    font-size: 4em;
-    line-height: 1.5em;
-    font-weight: 900;
-    text-transform: uppercase;
-}
-
-.content .textBox h2 span
-{
-    font-size: 2em;
-}
-
-.content .textBox p
-{
-    color: black;
-}
-
-.content .textBox a
-{
+.go-btn{
     color: white;
     display: inline-block;
     margin-top: 20px;
@@ -104,18 +18,14 @@ header ul li a
     text-transform: uppercase;
 }
 
-.content .imgBox
-{
-    width: 600px;
-    display: flex;
-    padding-right: 50px;
-    margin-top: 50px;
-    justify-content: flex-end;
+.go-btn a{
+    color: #fff;
 }
 
 .circle
 {
     position: absolute;
+    z-index: -1;
     top: 0;
     left: 0;
     width: 100%;

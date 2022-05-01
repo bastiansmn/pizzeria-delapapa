@@ -4,19 +4,24 @@
 
    --scrollbar-size: 4px;
 }
-*{
+
+body {
+   overflow-y: scroll;
+   font-family: sans-serif;
+}
+
+* {
    margin: 0;
    padding: 0;
 }
 
-body{
-   font-family: sans-serif;
+*::-webkit-scrollbar {
+   width: var(--scrollbar-size);
+   height: var(--scrollbar-size);
 }
 
-#nav-bar{
-   position: sticky;
-   top: 0;
-   z-index: 10;
+*::-webkit-scrollbar-thumb {
+   background: var(--orange);
 }
 
 .navbar-brand img{

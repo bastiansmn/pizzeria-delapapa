@@ -1,29 +1,10 @@
+const menuController = require("../controller/menu");
+
 module.exports = (app, db) => {
    app.get(
       "/pages/menu",
-      (_req, res) => {
-         const menu = [
-            {
-               name: "Pizza + drink",
-               price: "10€",
-            },
-            {
-               name: "Pizza + drink",
-               price: "10€",
-            },
-            {
-               name: "Pizza + drink",
-               price: "10€",
-            },
-            {
-               name: "Pizza + drink",
-               price: "10€",
-            },
-            {
-               name: "Pizza + drink",
-               price: "10€",
-            },
-         ]
+      async (_req, res) => {
+         const menu = await menuController.getProducts(db);
          res.render("pages/menu", {
             menu
          });

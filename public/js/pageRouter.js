@@ -5,7 +5,8 @@ const renderPage = (target, endpoint, hashChange=true) => {
          if ($(target).html() !== data) {
             $(target).html(data);
             if (hashChange) window.location.hash = endpoint;
-            $(`.${endpoint}`).addClass("active");
+            $(`.nav-link.${endpoint}`).addClass("active");
+            $(`.nav-link.${endpoint}`).attr("aria-current", "page");
          }
       }).catch(err => {
          console.error(err);
@@ -32,7 +33,9 @@ class PageRouter {
                });
             });
             $(".nav-link").removeClass("active");
-            $(`.${route}`).addClass("active");
+            $(".nav-link").removeAttr("aria-current");
+            $(`.nav-link.${route}`).attr("aria-current", "page");
+            $(`.nav-link.${route}`).addClass("active");
             renderPage(this.target, route);
          });
       });

@@ -12,3 +12,18 @@
       transform: scale(1) var(--transformation);
    }
 }
+
+.width-ltr {
+   animation: width-ltr .15s ease-in-out forwards;
+}
+
+@keyframes width-ltr {
+   from {
+      width: 0;
+      opacity: 0;
+   }
+   to {
+      width: var(--w, 100%);
+      opacity: 1;
+   }
+}

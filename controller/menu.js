@@ -6,7 +6,6 @@ module.exports = {
       return new Promise(resolve => {
          db.query(query.getProducts)
             .then(res => {
-               console.log(res.rows);
                resolve(res.rows.map(e => {
                   return {
                      // ... = spread les elements de e

@@ -5,9 +5,14 @@ module.exports = (app, db) => {
       "/pages/menu",
       async (_req, res) => {
          const menu = await menuController.getProducts(db);
-         res.render("pages/menu", {
-            menu
-         });
+         if(menu!=null){
+            res.render("pages/menu", {
+               menu
+            });
+         }
+         else{
+            console.error("menu empty, please initialize the database");
+         }
       }
    );
 }

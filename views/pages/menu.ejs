@@ -1,7 +1,10 @@
 <div class="container-fluid">
    <ul>
-      <% menu.forEach(m => { %>
-         <li><%= m.name %> - <%= m.price %></li>
+      <% menus.forEach(m => { %>
+         <li><%= m.menu_name %> - <%= m.price %></li>
+      <% }) %>
+      <% products.forEach(m => { %>
+          <li><%= m.name %> - <%= m.price %></li>
       <% }) %>
    </ul>
 </div>

@@ -19,5 +19,18 @@ module.exports = {
                resolve(null);
             });
       });
+   },
+   getMenus: (db) => {
+      return new Promise(resolve => {
+         db.query(query.getMenus)
+             .then(res => {
+                // console.log(res.rows);
+                resolve(res.rows);
+             })
+             .catch(err => {
+                console.error(err);
+                resolve(null);
+             })
+      });
    }
 }

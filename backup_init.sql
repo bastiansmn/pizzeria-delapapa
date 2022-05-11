@@ -35,6 +35,28 @@ CREATE TABLE public.address (
 ALTER TABLE public.address OWNER TO postgres;
 
 --
+-- Name: address_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.address_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.address_id_seq OWNER TO postgres;
+
+--
+-- Name: address_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.address_id_seq OWNED BY public.address.id;
+
+
+--
 -- Name: deliverer; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -49,11 +71,34 @@ CREATE TABLE public.deliverer (
 ALTER TABLE public.deliverer OWNER TO postgres;
 
 --
+-- Name: deliverer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.deliverer_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.deliverer_id_seq OWNER TO postgres;
+
+--
+-- Name: deliverer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.deliverer_id_seq OWNED BY public.deliverer.id;
+
+
+--
 -- Name: drink_size; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.drink_size (
-    size character varying(10) NOT NULL
+    size character varying(10) NOT NULL,
+    coefficient double precision
 );
 
 
@@ -112,7 +157,10 @@ ALTER SEQUENCE public.ingredients_ingr_id_seq OWNED BY public.ingredients.ingr_i
 
 CREATE TABLE public.link_menu_product (
     menu_id integer,
-    product_id integer
+    drink_size character varying,
+    pizza_size character varying,
+    product_type integer,
+    quant integer
 );
 
 
@@ -150,7 +198,9 @@ ALTER TABLE public.menu_size OWNER TO postgres;
 CREATE TABLE public.menus (
     id integer NOT NULL,
     price integer NOT NULL,
-    menu_name character varying(40) NOT NULL
+    menu_name character varying(40) NOT NULL,
+    image character varying,
+    description character varying
 );
 
 
@@ -185,7 +235,7 @@ ALTER SEQUENCE public.menus_id_seq OWNED BY public.menus.id;
 CREATE TABLE public."order" (
     id integer NOT NULL,
     status character varying(10) NOT NULL,
-    date character varying(20) NOT NULL,
+    date timestamp with time zone NOT NULL,
     address_id integer
 );
 
@@ -193,11 +243,34 @@ CREATE TABLE public."order" (
 ALTER TABLE public."order" OWNER TO postgres;
 
 --
+-- Name: order_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.order_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_id_seq OWNER TO postgres;
+
+--
+-- Name: order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.order_id_seq OWNED BY public."order".id;
+
+
+--
 -- Name: pizza_size; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.pizza_size (
-    size character varying NOT NULL
+    size character varying NOT NULL,
+    coefficient double precision
 );
 
 
@@ -239,7 +312,7 @@ ALTER TABLE public.product_id_seq OWNER TO postgres;
 --
 
 CREATE TABLE public.product (
-    id integer DEFAULT nextval('public.product_id_seq'::regclass) NOT NULL,
+    id integer NOT NULL,
     name character varying,
     price integer,
     image character varying,
@@ -281,6 +354,42 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: address id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.address ALTER COLUMN id SET DEFAULT nextval('public.address_id_seq'::regclass);
+
+
+--
+-- Name: deliverer id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.deliverer ALTER COLUMN id SET DEFAULT nextval('public.deliverer_id_seq'::regclass);
+
+
+--
 -- Name: ingredients ingr_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -292,6 +401,20 @@ ALTER TABLE ONLY public.ingredients ALTER COLUMN ingr_id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.menus ALTER COLUMN id SET DEFAULT nextval('public.menus_id_seq'::regclass);
+
+
+--
+-- Name: order id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."order" ALTER COLUMN id SET DEFAULT nextval('public.order_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -314,7 +437,11 @@ COPY public.deliverer (id, deliverer_name, deliverer_lastname, order_id) FROM st
 -- Data for Name: drink_size; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.drink_size (size) FROM stdin;
+COPY public.drink_size (size, coefficient) FROM stdin;
+25cl	0.9
+33cl	1
+50cl	1.2
+1l	1.5
 \.
 
 
@@ -475,7 +602,20 @@ COPY public.ingredients (ingr_id, ingr_name) FROM stdin;
 -- Data for Name: link_menu_product; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.link_menu_product (menu_id, product_id) FROM stdin;
+COPY public.link_menu_product (menu_id, drink_size, pizza_size, product_type, quant) FROM stdin;
+2	\N	M	0	1
+2	\N	\N	1	1
+2	50cl	\N	2	2
+3	\N	M	0	2
+3	\N	\N	1	2
+3	1l	\N	2	1
+4	\N	M	0	3
+4	\N	\N	1	2
+4	1l	\N	2	1
+7	\N	XL	0	3
+5	\N	\N	1	3
+6	\N	S	0	2
+6	1l	\N	2	1
 \.
 
 
@@ -499,13 +639,13 @@ COPY public.menu_size (menu_id, size) FROM stdin;
 -- Data for Name: menus; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.menus (id, price, menu_name) FROM stdin;
-2	2090	Extra menu
-3	3390	Mega menu
-4	4190	Giga menu
-5	1600	Multi mix
-6	2190	Menu duo
-7	3900	3 Pizzas XL
+COPY public.menus (id, price, menu_name, image, description) FROM stdin;
+2	2090	Extra menu	https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/deal/extra-menu-heineken.b1c0f264d346aae1ccd68beb5b260e64.1.jpg	1 entrée, 1 pizza Medium, 2 boissons individuelles (50cl ou moins)
+3	3390	Mega menu	https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/deal/mega-menu-heineken.4cc2ca9114bab16a56034d3db164b90f.1.jpg	2 entrées, 2 pizzas Medium, 1 boisson à partager (1L ou plus)
+4	4190	Giga menu	https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/deal/giga-menu-heineken.62e3d2c55e8b6eb67974e715da5ba7b9.1.jpg	2 Entrées, 3 Pizzas Medium, 1 boisson à partager (1L ou plus)
+7	3900	3 Pizzas XL	https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/deal/local-3pxl-39e-del.6d41734f162fae4b9753b39848fbf68e.1.jpg	3 Pizzas Xlarge Pâtes Pan ou Classic.
+5	1600	Multi mix	https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/deal/multi-mix.316747c0f3b4846c443263b77a0d4995.1.jpg	10 Chicken Wings Originales + 5 Chicken Tasty + 10 Chicken Croqs + 4 Sauces au choix
+6	2190	Menu duo	https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/deal/bogo-50-off.d1fd8c0b42f64351c700d62174b04e8a.1.jpg	2 pizzas Small et 1 boisson 1l à partager.
 \.
 
 
@@ -521,7 +661,10 @@ COPY public."order" (id, status, date, address_id) FROM stdin;
 -- Data for Name: pizza_size; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.pizza_size (size) FROM stdin;
+COPY public.pizza_size (size, coefficient) FROM stdin;
+S	0.9
+M	1
+XL	1.1
 \.
 
 
@@ -596,6 +739,12 @@ COPY public.product (id, name, price, image, type, is_custom, is_veggie, is_spic
 --
 
 COPY public.sauce (name) FROM stdin;
+Barbecue
+Curry
+Ketchup
+Blanche
+Samouraï
+Algérienne
 \.
 
 
@@ -605,6 +754,20 @@ COPY public.sauce (name) FROM stdin;
 
 COPY public.users (id, name, email, lastname, password, phone_num) FROM stdin;
 \.
+
+
+--
+-- Name: address_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.address_id_seq', 1, false);
+
+
+--
+-- Name: deliverer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.deliverer_id_seq', 1, false);
 
 
 --
@@ -622,10 +785,24 @@ SELECT pg_catalog.setval('public.menus_id_seq', 7, true);
 
 
 --
+-- Name: order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.order_id_seq', 1, false);
+
+
+--
 -- Name: product_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.product_id_seq', 50, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 
 --
@@ -761,6 +938,14 @@ ALTER TABLE ONLY public.prod_quant
 
 
 --
+-- Name: link_menu_product drink_size; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.link_menu_product
+    ADD CONSTRAINT drink_size FOREIGN KEY (drink_size) REFERENCES public.drink_size(size);
+
+
+--
 -- Name: ingr_quant ingr_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -833,18 +1018,18 @@ ALTER TABLE ONLY public.prod_quant
 
 
 --
+-- Name: link_menu_product pizza_size; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.link_menu_product
+    ADD CONSTRAINT pizza_size FOREIGN KEY (pizza_size) REFERENCES public.pizza_size(size);
+
+
+--
 -- Name: prod_quant product_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.prod_quant
-    ADD CONSTRAINT product_id FOREIGN KEY (product_id) REFERENCES public.product(id);
-
-
---
--- Name: link_menu_product product_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.link_menu_product
     ADD CONSTRAINT product_id FOREIGN KEY (product_id) REFERENCES public.product(id);
 
 

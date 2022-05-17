@@ -27,3 +27,18 @@
       opacity: 1;
    }
 }
+
+.appear-ltr {
+   animation: appear-ltr .8s ease-in-out forwards;
+}
+
+@keyframes appear-ltr {
+   from {
+      opacity: 0;
+      transform: translateX(-5%);
+   }
+   to {
+      opacity: 1;
+      transform: translateX(0) var(--transformation);
+   }
+}

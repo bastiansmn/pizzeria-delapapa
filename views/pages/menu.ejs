@@ -1,10 +1,32 @@
-<div class="container-fluid">
-   <ul>
-      <% menus.forEach(m => { %>
-         <li><%= m.menu_name %> - <%= m.price %></li>
-      <% }) %>
-      <% products.forEach(m => { %>
-          <li><%= m.name %> - <%= m.price %></li>
-      <% }) %>
-   </ul>
+<div class="p-3">
+   <div class="products__navigation d-flex align-items-center mb-4" style="height: 50px;">
+      <a role="button" class="menus text-decoration-none d-flex align-items-center px-3 h-100">Menus</a>
+      <a role="button" class="pizzas text-decoration-none d-flex align-items-center px-3 h-100">Pizzas</a>
+      <a role="button" class="starters text-decoration-none d-flex align-items-center px-3 h-100">Entrées</a>
+      <a role="button" class="drinks text-decoration-none d-flex align-items-center px-3 h-100">Boissons</a>
+   </div>
+
+   <div class="products__category"></div>
+
+   <script>
+      const productsRouter = new Router(
+         ["menus", "pizzas", "starters", "drinks"],
+         ".products__category",
+         "menus"
+      )
+   </script>
+   <style>
+      a[role=button].active {
+         background-color: var(--primary);
+         color: white;
+      }
+
+      a[role=button] {
+         transition: all 0.3s ease-in-out;
+      }
+
+      a[role=button]:not(.active):hover {
+         color: var(--primary);
+      }
+   </style>
 </div>

@@ -1,0 +1,25 @@
+<div class="appear-ltr row g-3">
+   <% drinks.forEach(drink => {%>
+      <div class="col-sm-12 col-md-4 col-lg-3">
+         <div role="button" class="drink__item shadow-sm h-100 d-flex flex-column justify-content-between bg-white">
+            <img class="w-100" src="<%= drink.image %>" alt="<%= drink.menu_name %>">
+            <div class="p-2" style="max-height: 30%;">
+               <p class="fw-normal"><%= drink.name %></p>
+            </div> 
+            <div class="py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
+               <p class="fw-normal my-auto"><%= drink.price %></p>
+               <button role="button" class="bg-primary text-white p-2">Ajouter</button>
+            </div>
+         </div>  
+      </div>
+   <% }) %>
+   <style>
+      .menu__item {
+         transition: all 0.2s ease-in-out;
+      }
+      .menu__item:hover {
+         box-shadow: 0 .125rem .25rem rgba(0,0,0,.2)!important;
+         transform: scale(1.01);
+      }
+   </style>
+</div>

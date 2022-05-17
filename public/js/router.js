@@ -1,5 +1,7 @@
-const render = (target, endpoint, hashChange=true) => {
-   fetch(`/components/${endpoint}`)
+const render = (target, endpoint, hashChange=false) => {
+   fetch(`/components/${endpoint}`, {
+      method: "PUT"
+   })
       .then(response => response.text())
       .then(data => {
          if ($(target).html() !== data) {
@@ -9,25 +11,26 @@ const render = (target, endpoint, hashChange=true) => {
          }
       }).catch(err => {
          console.error(err);
+         $(target).html(`<div class="alert alert-danger">${err}</div>`);
       });
 }
 
 class Router {
-   constructor(routes, target) {
+   constructor(routes, target, defaultRoute="") {
       this.routes = routes;
       this.target = target;
+      this.defaultRoute = defaultRoute;
 
       this.routes.forEach(route => {
          $(`.${route}`).on("click", () => {
-            Array.from($(".nav-link")).filter(el => {
-               return Array.from(el.classList).some(cl => {
-                  return this.routes.includes(cl);
-               });
-            });
-            $(".nav-link").removeClass("active");
+            this.routes.forEach(r => {
+               $(`.${r}`).removeClass("active");
+            })
             $(`.${route}`).addClass("active");
             render(this.target, route);
          });
       });
+      if (defaultRoute) 
+         render(this.target, this.routes.find(e => e === defaultRoute));
    }
 }

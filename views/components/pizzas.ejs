@@ -61,7 +61,10 @@
       $(".addPizza > select").on("change", function(e) {
          $(`#addPizza__${this.dataset.pizzaId} > p`)[0].innerText = displayPrice(
             $(`#addPizza__${this.dataset.pizzaId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient
-         )
+         );
+         $(`#addPizza__${this.dataset.pizzaId} > input[name="price"]`)[0].value = $(`#addPizza__${this.dataset.pizzaId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient;
+
+         $(`#addPizza__${this.dataset.pizzaId} > input[name="displayedPrice"]`)[0].value = displayPrice($(`#addPizza__${this.dataset.pizzaId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient);
       });
 
       $('.addPizza').on('submit', function(e) {

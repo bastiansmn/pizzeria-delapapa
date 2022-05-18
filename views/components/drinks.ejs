@@ -46,7 +46,11 @@
       $(".addDrink > select").on("change", function(e) {
          $(`#addDrink__${this.dataset.drinkId} > p`)[0].innerText = displayPrice(
             $(`#addDrink__${this.dataset.drinkId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient
-         )
+            // TODO: Change price/displayedPrice attributes
+         );
+         $(`#addDrink__${this.dataset.drinkId} > input[name="price"]`)[0].value = $(`#addDrink__${this.dataset.drinkId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient;
+
+         $(`#addDrink__${this.dataset.drinkId} > input[name="displayedPrice"]`)[0].value = displayPrice($(`#addDrink__${this.dataset.drinkId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient);
       });
 
       $('.addDrink').on('submit', function(e) {

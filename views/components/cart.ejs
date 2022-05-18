@@ -1,20 +1,37 @@
 <link rel="stylesheet" href="css/cart.css">
-<div class="cart__content_ bounce rounded bg-white shadow p-3 position-absolute end-0" style="width: min(400px, 85vw); z-index: 50; top: 10px">
+<div class="cart__content_ rounded bg-white shadow p-3 position-absolute end-0" style="width: min(400px, 85vw); z-index: 50; top: 10px">
    <h1 class="font-weight-bold mb-4" style="font-size: 20px;"><u>Votre panier :</u></h1>
    <div class="items">
       <% items.forEach(i => { %>
+         <!-- TODO ajouter un tooltip pour afficher détail (sauce, taille, etc) -->
          <div role="button" class="item p-2 rounded d-flex justify-content-between align-items-center mb-2" style="height: 50px;" data-item-id="<%= i.item_id %>">
             <img class="h-100 rounded" style="aspect-ratio: 1/1; object-fit: cover;" src="<%= i.image %>" alt="<%= i.name %>">
-            <div style="width: 60%; font-size: 16px;"><%= i.name %></div>
-            <div class="font-weight-bold d-flex justify-content-between" style="width: 19%;">
-               <span><%= i.price %> €</span>
-               <small class="font-weight-light">x<%= i.quant %></small>
+            <div class="w-50 fs-6"><%= i.name %></div>
+            <div class="font-weight-bold d-flex justify-content-between align-items-center" style="width: 35%;">
+               <span><%= i.displayedPrice %></span>
+               <small class="font-weight-light d-flex align-items-center justify-content-center">x<%= i.quantity %></small>
+               <!-- TODO: Handle quantity change -->
+               <button role="button" data-item-id="<%= i.item_id %>" class="deleteItem bg-transparent">
+                  <svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                     <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                     <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                  </svg>
+               </button>
             </div>
          </div>
       <% }) %>
    </div>
-   <div class="ml-auto">Total: <u class="font-weight-bold"><%= total %>€</u></div>
-   <button type="button" class="submit__command rounded shadow-sm p-2 m-auto d-flex justify-content-center align-items-center bg-danger text-white font-weight-bold">
+   <div class="ml-auto">Total: <u class="font-weight-bold"><%= total %></u></div>
+   <button type="button" class="submit__command rounded shadow-sm p-2 m-auto d-flex justify-content-center align-items-center bg-primary text-white font-weight-bold">
       Commander !
    </button>
+
+   <script>
+      // TODO: Commander le panier
+
+      $(".deleteItem").click(function() {
+         const { cart } = window;
+         cart.removeItem(this.dataset.itemId);
+      });
+   </script>
 </div>

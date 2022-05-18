@@ -7,10 +7,16 @@
                <p class="fw-normal"><%= menu.menu_name %></p>
                <p style="font-size: 13px;" class="fw-light text-truncate"><%= menu.description %></p>
             </div> 
-            <div class="py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
-               <p class="fw-normal my-auto"><%= menu.price %></p>
+            <form id="addMenu__<%= menu.id %>" class="addMenu py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
+               <p class="fw-normal my-auto" data-price="<%= menu.price %>"><%= menu.displayedPrice %></p>
                <button role="button" class="bg-primary text-white p-2">Ajouter</button>
-            </div>
+               <input type="hidden" name="menu__id" value="<%= menu.id %>">
+               <input type="hidden" name="name" value="<%= menu.menu_name %>">
+               <input type="hidden" name="image" value="<%= menu.image %>">
+               <input type="hidden" name="price" value="<%= menu.price %>">
+               <input type="hidden" name="displayedPrice" value="<%= menu.displayedPrice %>">
+               <input type="hidden" name="type" value="menu">
+            </form>
          </div>  
       </div>
    <% }) %>
@@ -23,4 +29,14 @@
          transform: scale(1.01);
       }
    </style>
+   <script>
+      $('.addMenu').on('submit', function(e) {
+         e.preventDefault();
+         const data = $(this).serializeArray();
+         console.log(...data.map(e => e.value));
+         const itemToAdd = new Item(...data.map(e => e.value));
+         const { cart } = window;
+         cart.addToCart(itemToAdd);
+      });
+   </script>
 </div>

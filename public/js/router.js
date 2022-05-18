@@ -23,6 +23,7 @@ class Router {
 
       this.routes.forEach(route => {
          $(`.${route}`).on("click", () => {
+            if ($(`.${route}`).hasClass("active")) return;
             this.routes.forEach(r => {
                $(`.${r}`).removeClass("active");
             })

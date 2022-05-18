@@ -1,3 +1,16 @@
+class Item {
+   constructor(item_id, name, image, price, displayedPrice, type, opt="") {
+      this.item_id = item_id;
+      this.name = name;
+      this.image = image;
+      this.price = price;
+      this.displayedPrice = displayedPrice;
+      this.type = type;
+      this.quantity = 1;
+      this.opt = opt;
+   }
+}
+
 class Cart {
    #cart;
    #target;
@@ -31,21 +44,34 @@ class Cart {
    }
 
    addToCart = (item) => {
-      this.#cart.push(item);
+      const existingItem = this.#cart.find(i => i.item_id === item.item_id);
+      if (!existingItem)
+         this.#cart.push(item);
+      else 
+         existingItem.quantity++;
+      this.update();
+      // TODO: Ajouter des alerts pour ajout/suppression
    }
 
-   removeItem = (item) => {
+   removeItem = (item_id) => {
       this.#cart = this.#cart.filter(i => {
-         return i.id !== item.id;
+         return i.item_id !== item_id;
       });
+      this.update();
    }
 
    cartSize = () => {
-      return this.#cart.length;
+      return this.#cart.reduce((acc, item) => {
+         return acc + item.quantity;
+      }, 0);
    }
 
-   update = () => {
-      // Update component (display items in cart in needed, and repaint icon with cartSize)
+   update = async () => {
+      console.log(this.#cart);
+      // Update component (display items in cart if needed, and repaint icon with cartSize)
+      if (this.showCart)
+         $(".cart__content").html($(await this.renderComponent()));
+      $(".cart__size").html(this.cartSize());
    }
 
    renderComponent = () => {
@@ -56,7 +82,7 @@ class Cart {
                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-               items: []
+               items: this.#cart
             })
          })
             .then(res => res.text())

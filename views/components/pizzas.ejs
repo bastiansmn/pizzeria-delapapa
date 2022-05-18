@@ -1,15 +1,49 @@
 <div class="appear-ltr row g-3">
+   <div class="col-sm-12 col-md-4 col-lg-3">
+      <div role="button" class="menu__item shadow-sm h-100 d-flex flex-column justify-content-between bg-white">
+         <img class="w-100" src="https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/pizza/la-perso.a5ab8f5feea41b8a7d9ff5be59b8a1ed.1.jpg" alt="Pizza custom">
+         <div class="p-2" style="max-height: 30%;">
+            <p class="fw-normal">Pizza perso !</p>
+            <p style="font-size: 13px;" class="fw-light text-truncate">Créer vôtre propre pizza !</p>
+         </div> 
+         <form id="addMenu__-1" class="py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
+            <p class="fw-normal my-auto" data-price="1800">A partir de 18€</p>
+            <button role="button" class="bg-primary text-white p-2">Personnaliser</button>
+         </form>
+      </div>  
+   </div>
    <% pizzas.forEach(pizza => {%>
       <div class="col-sm-12 col-md-4 col-lg-3">
-         <div role="button" class="pizza__item shadow-sm h-100 d-flex flex-column justify-content-between bg-white">
+         <div role="button" data-type="pizza" data-id="<%= pizza.id %>" class="pizza__item shadow-sm h-100 d-flex flex-column justify-content-between bg-white">
             <img class="w-100" src="<%= pizza.image %>" alt="<%= pizza.menu_name %>">
             <div class="p-2" style="max-height: 30%;">
                <p class="fw-normal"><%= pizza.name %></p>
+               <p style="font-size: 13px;" class="fw-light text-truncate"><%= pizza.description %></p>
             </div> 
-            <div class="py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
-               <p class="fw-normal my-auto"><%= pizza.price %></p>
+            <form id="addPizza__<%= pizza.id %>" class="addPizza py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
+               <p class="fw-normal my-auto" data-price="<%= pizza.price %>"><%= pizza.displayedPrice %></p>
+               <input type="hidden" name="pizza__id" value="<%= pizza.id %>">
+               <input type="hidden" name="name" value="<%= pizza.name %>">
+               <input type="hidden" name="image" value="<%= pizza.image %>">
+               <input type="hidden" name="price" value="<%= pizza.price %>">
+               <input type="hidden" name="displayedPrice" value="<%= pizza.displayedPrice %>">
+               <input type="hidden" name="type" value="pizza">
+               <select name="size" id="pizza__size__<%= pizza.id %>" data-pizza-id="<%= pizza.id %>">
+                  <!-- TODO: Mettre à jour le panier -->
+                  <% sizes.forEach(size => {%>
+                     <option 
+                        value="<%= size.size %>" 
+                        data-coefficient="<%= size.coefficient %>"
+                        <% if (size.coefficient === 1) { %>
+                           selected
+                        <% } %>
+                     >
+                        <%= size.size %>
+                     </option>
+                  <% }) %>
+               </select>
                <button role="button" class="bg-primary text-white p-2">Ajouter</button>
-            </div>
+            </form>
          </div>  
       </div>
    <% }) %>
@@ -22,4 +56,22 @@
          transform: scale(1.01);
       }
    </style>
+   <script>
+      // Changer le prix selon la taille
+      $(".addPizza > select").on("change", function(e) {
+         $(`#addPizza__${this.dataset.pizzaId} > p`)[0].innerText = displayPrice(
+            $(`#addPizza__${this.dataset.pizzaId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient
+         )
+      });
+
+      $('.addPizza').on('submit', function(e) {
+         e.preventDefault();
+         // Ignore select
+         const data = $(this).serializeArray();
+         console.log(data);
+         const itemToAdd = new Item(...data.map(e => e.value));
+         const { cart } = window;
+         cart.addToCart(itemToAdd);
+      });
+   </script>
 </div>

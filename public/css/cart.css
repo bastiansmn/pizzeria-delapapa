@@ -1,5 +1,4 @@
 .cart__content::before {
-   animation: bounce .1s ease-in-out forwards;
    content: "";
    position: absolute;
    aspect-ratio: 1/1;
@@ -7,7 +6,7 @@
    right: 4px;
    border-radius: 2px;
    background: white;
-   --transformation: rotate(45deg) translateY(10px);
+   transform: rotate(45deg) translateY(10px);
 }
 
 .item {

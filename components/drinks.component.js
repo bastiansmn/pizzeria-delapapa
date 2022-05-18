@@ -1,15 +1,11 @@
-const query = require("../queries/menu.query");
-const { displayPrice } = require("../utils/numbers");
+const drinksController = require("../controller/menu");
+const sizesController = require("../controller/sizes");
 
 module.exports = (app, db) => {
    app.put("/components/drinks", async (_req, res) => {
       res.render("components/drinks", {
-         drinks: (await db.query(query.getDrinks)).rows.map(e => {
-            return {
-               ...e,
-               price: displayPrice(e.price),
-            };
-         }),
+         drinks: await drinksController.getDrinks(db),
+         sizes: await sizesController.getDrinkSizes(db),
       });
    });
 }

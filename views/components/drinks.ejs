@@ -6,10 +6,29 @@
             <div class="p-2" style="max-height: 30%;">
                <p class="fw-normal"><%= drink.name %></p>
             </div> 
-            <div class="py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
-               <p class="fw-normal my-auto"><%= drink.price %></p>
+            <form id="addDrink__<%= drink.id %>" class="addDrink py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
+               <p class="fw-normal my-auto" data-price="<%= drink.price %>"><%= drink.displayedPrice %></p>
+               <input type="hidden" name="drink__id" value="<%= drink.id %>">
+               <input type="hidden" name="name" value="<%= drink.name %>">
+               <input type="hidden" name="image" value="<%= drink.image %>">
+               <input type="hidden" name="price" value="<%= drink.price %>">
+               <input type="hidden" name="displayedPrice" value="<%= drink.displayedPrice %>">
+               <input type="hidden" name="type" value="drink">
+               <select name="size" id="drink__size" data-drink-id="<%= drink.id %>">
+                  <% sizes.forEach(size => {%>
+                     <option 
+                        value="<%= size.size %>" 
+                        data-coefficient="<%= size.coefficient %>"
+                        <% if (size.coefficient === 1) { %>
+                           selected
+                        <% } %>
+                     >
+                        <%= size.size %>
+                     </option>
+                  <% }) %>
+               </select>
                <button role="button" class="bg-primary text-white p-2">Ajouter</button>
-            </div>
+            </form>
          </div>  
       </div>
    <% }) %>
@@ -22,4 +41,21 @@
          transform: scale(1.01);
       }
    </style>
+   <script>
+      // Changer le prix selon la taille
+      $(".addDrink > select").on("change", function(e) {
+         $(`#addDrink__${this.dataset.drinkId} > p`)[0].innerText = displayPrice(
+            $(`#addDrink__${this.dataset.drinkId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient
+         )
+      });
+
+      $('.addDrink').on('submit', function(e) {
+         e.preventDefault();
+         // Ignore select
+         const data = $(this).serializeArray();
+         const itemToAdd = new Item(...data.map(e => e.value));
+         const { cart } = window;
+         cart.addToCart(itemToAdd);
+      });
+   </script>
 </div>

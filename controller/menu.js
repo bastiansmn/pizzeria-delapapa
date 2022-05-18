@@ -9,12 +9,12 @@ module.exports = {
                resolve(result.rows.map(e => {
                   return {
                      ...e,
-                     price: displayPrice(e.price),
+                     displayedPrice: displayPrice(e.price),
                   };
                }));
             })
-            .catch(e => {
-               console.log(e);
+            .catch(err => {
+               console.error(err);
             });
       })
    },
@@ -26,7 +26,7 @@ module.exports = {
                   return {
                      // ... = spread les elements de e
                      ...e,
-                     price: displayPrice(e.price),
+                     displayedPrice: displayPrice(e.price),
                   }
                }));
             })
@@ -44,9 +44,21 @@ module.exports = {
                   return {
                      // ... = spread les elements de e
                      ...e,
-                     price: displayPrice(e.price),
+                     displayedPrice: displayPrice(e.price),
                   }
                }));
+            })
+            .catch(err => {
+               console.error(err);
+               resolve(null);
+            });
+      });
+   },
+   getSauces: (db) => {
+      return new Promise(resolve => {
+         db.query(query.getSauces)
+            .then(res => {
+               resolve(res.rows);
             })
             .catch(err => {
                console.error(err);
@@ -62,7 +74,7 @@ module.exports = {
                   return {
                      // ... = spread les elements de e
                      ...e,
-                     price: displayPrice(e.price),
+                     displayedPrice: displayPrice(e.price),
                   }
                }));
             })
@@ -72,17 +84,4 @@ module.exports = {
             });
       });
    },
-   getMenus: (db) => {
-      return new Promise(resolve => {
-         db.query(query.getMenus)
-             .then(res => {
-                // console.log(res.rows);
-                resolve(res.rows);
-             })
-             .catch(err => {
-                console.error(err);
-                resolve(null);
-             })
-      });
-   }
 }

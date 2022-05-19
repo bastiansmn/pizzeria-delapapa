@@ -2,7 +2,6 @@
 
 :root {
    --primary: #f77f00;
-   /* TODO */
 
    --scrollbar-size: 4px;
 
@@ -12,6 +11,22 @@
 /* Bootstrap edits : */
 .bg-primary {
    background-color: var(--primary) !important;
+}
+
+.btn-primary {
+   color: #fff;
+   background-color: var(--primary) !important;
+   border-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+   color: #fff;
+   background-color: var(--primary) !important;
+   border-color: var(--primary) !important;
+}
+
+.btn-primary:active, .btn-primary:focus {
+   box-shadow: 0 0 0 0.25rem rgba(255, 123, 0, 0.5) !important;
 }
 
 .ratio-1x1 {

@@ -33,10 +33,10 @@
       </div>
    <% }) %>
    <style>
-      .menu__item {
+      .drink__item {
          transition: all 0.2s ease-in-out;
       }
-      .menu__item:hover {
+      .drink__item:hover {
          box-shadow: 0 .125rem .25rem rgba(0,0,0,.2)!important;
          transform: scale(1.01);
       }
@@ -46,7 +46,6 @@
       $(".addDrink > select").on("change", function(e) {
          $(`#addDrink__${this.dataset.drinkId} > p`)[0].innerText = displayPrice(
             $(`#addDrink__${this.dataset.drinkId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient
-            // TODO: Change price/displayedPrice attributes
          );
          $(`#addDrink__${this.dataset.drinkId} > input[name="price"]`)[0].value = $(`#addDrink__${this.dataset.drinkId} > p`)[0].dataset.price * this.children[this.selectedIndex].dataset.coefficient;
 

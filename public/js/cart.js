@@ -18,7 +18,13 @@ class Cart {
    showCart = false;
 
    constructor(target) {
-      this.#cart = [];
+      // Load session storage
+      if (sessionStorage.getItem('cart')) {
+         this.#cart = JSON.parse(sessionStorage.getItem('cart'));
+         this.update();
+      } else {
+         this.#cart = [];
+      }
       this.#target = target;
       
       // Toggle cart and render component
@@ -50,13 +56,15 @@ class Cart {
       else 
          existingItem.quantity++;
       this.update();
-      // TODO: Ajouter des alerts pour ajout/suppression
+      window.alert.show(`${item.name} ajouté au panier`, AlertType.SUCCESS);
    }
 
    removeItem = (item_id) => {
+      const item = this.#cart.find(i => i.item_id === item_id);
       this.#cart = this.#cart.filter(i => {
          return i.item_id !== item_id;
       });
+      window.alert.show(`${item.name} supprimé du panier`, AlertType.DANGER);
       this.update();
    }
 
@@ -67,8 +75,8 @@ class Cart {
    }
 
    update = async () => {
-      console.log(this.#cart);
       // Update component (display items in cart if needed, and repaint icon with cartSize)
+      sessionStorage.setItem("cart", JSON.stringify(this.#cart));
       if (this.showCart)
          $(".cart__content").html($(await this.renderComponent()));
       $(".cart__size").html(this.cartSize());

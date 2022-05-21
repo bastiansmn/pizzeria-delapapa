@@ -20,4 +20,10 @@ require("./components")(app, db);
 // Registering pages
 require('./pages')(app, db);
 
+// Require mapped controllers
+require('./mappedControllers')(app, db);
+
 app.listen(process.env.PORT || 3000);
+
+// TODO: Page delivraison (vérif par webtoken si user est livreur) -> si oui lui envoyer le button d'affichage de la page de livraison
+// TODO: Inscription/connexion

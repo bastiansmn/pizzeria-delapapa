@@ -277,7 +277,7 @@ ALTER TABLE ONLY menu_quant
     ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id);
 
 ALTER TABLE ONLY ingr_quant
-    ADD CONSTRAINT pizza_id FOREIGN KEY (pizza_id) REFERENCES product(id);
+    ADD CONSTRAINT pizza_id FOREIGN KEY (pizza_id) REFERENCES product(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY prod_quant
     ADD CONSTRAINT pizza_size FOREIGN KEY (pizza_size) REFERENCES pizza_size(size);

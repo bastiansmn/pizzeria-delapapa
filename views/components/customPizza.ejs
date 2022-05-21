@@ -1,3 +1,122 @@
 <div class="container">
-   <!-- TODO -->
+   <form id="select__ingredients">
+      <div class="mb-2">
+         <label class="d-flex justify-content-between mb-1">
+            Donnons-lui un nom :
+            <input required type="text" autocomplete="off" name="pizza__name" placeholder="..." class="ps-1">
+         </label>
+         <label class="d-flex justify-content-between">
+            Et une taille :
+            <select name="pizza__size" id="pizza__size">
+               <% sizes.forEach(size => { %>
+                  <option 
+                     value="<%= size.size %>" 
+                     data-coefficient="<%= size.coefficient %>"
+                     <% if (size.coefficient === 1) { %>
+                        selected
+                     <% } %>
+                  >
+                     <%= size.size %>
+                  </option>
+               <% }) %>
+            </select>
+         </label>
+      </div>
+      <% for (let type in ingredients) { %>
+         <div class="type__<%= type %> mb-3">
+            <h1 class="h4"><%= type %></h1>
+            <% ingredients[type].forEach(ingredient => { %>
+               <label class="w-100 mb-1 d-flex justify-content-between" data-ingr-id="<%=ingredient.ingr_id %>" data-ingr-type="<%= ingredient.ingr_type %>">
+                  <%= ingredient.ingr_name %>
+                  <input style="width: 10%;" class="ps-1 ingr__quant" type="checkbox" name="<%= ingredient.ingr_id %>" id="value__<%= ingredient.ingr_id %>">
+               </label>
+            <% }) %>
+         </div>
+      <% } %>
+   </form>
+   <script>
+      class PizzaCustomization {
+         // Centimes par ingrédients
+         static INGR_PRICE = 50;
+         static BASE_PRICE = 1600;
+
+         constructor() {
+            this.ingredients = [];
+            this.currentPrice = PizzaCustomization.BASE_PRICE;
+         }
+
+         addIngredient(ingr_id) {
+            this.ingredients.push(ingr_id);
+         }
+
+         deleteIngredient(ingr_id) {
+            this.ingredients = this.ingredients.filter(ingr => ingr !== ingr_id);
+         }
+
+         getBasePrice(coefficient) {
+            return PizzaCustomization.BASE_PRICE * coefficient;
+         }
+
+         getIngrPrice() {
+            return PizzaCustomization.INGR_PRICE * this.ingredients.length;
+         }
+      }
+
+      const custom = new PizzaCustomization();
+      $("#select__ingredients").on("submit", function(e) {
+         e.preventDefault();
+         // TODO: Vérifier les champs requis
+         const data = $(this).serializeArray();
+         const pizzaName = data.find(e => e.name === "pizza__name").value;
+         const pizzaSize = data.find(e => e.name === "pizza__size").value;
+         const ingredients = data.filter(e => e.value === 'on' && e.name.match(/\d+/gm));
+         console.log(pizzaSize);
+         if (!pizzaName || !pizzaSize) {
+            window.alert.show("Veuillez donnez un nom et une taille à votre pizza", AlertType.DANGER);
+            return;
+         }
+         if (ingredients.length < 3) {
+            window.alert.show("Selectionnez au moins 3 ingrédients !", AlertType.DANGER);
+            return;
+         }
+         // TODO: Add pizza in product table
+         fetch("/pizza/createCustom", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+               name: pizzaName,
+               price: custom.getBasePrice($(`#pizza__size option[value=${pizzaSize}]`)[0].dataset.coefficient) + custom.getIngrPrice(),
+               size: pizzaSize,
+               ingredients
+            })
+         })
+            .then(res => res.json())
+            .then(res => {
+               console.log(res);
+            })
+         // TODO: Add pizza in cart
+      });
+      
+      $("#pizza__size").on("change", function() {
+         $(".modal-footer > button").text(`Ajouter (${displayPrice(
+            custom.getBasePrice(this.children[this.selectedIndex].dataset.coefficient)
+            + custom.getIngrPrice()
+         )})`);
+      });
+      // Handle ingredients quant change
+      $(".ingr__quant").on("click", function () {
+         if (this.checked) 
+            custom.addIngredient(this.name);
+         else 
+            custom.deleteIngredient(this.name);
+         const pizzaSize = $("#pizza__size")[0];
+            const coefficient = pizzaSize.children[pizzaSize.selectedIndex].dataset.coefficient;
+            $(".modal-footer > button").text(`Ajouter (${displayPrice(
+               custom.getBasePrice(coefficient)
+               + custom.getIngrPrice()
+            )})`);
+      })
+   </script>
 </div>

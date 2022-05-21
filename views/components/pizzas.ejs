@@ -7,7 +7,7 @@
             <p style="font-size: 13px;" class="fw-light text-truncate">Créer vôtre propre pizza !</p>
          </div> 
          <div class="py-2 px-3 w-100 align-self-end d-flex align-items-center justify-content-between">
-            <p class="fw-normal my-auto" data-price="1800">A partir de 18€</p>
+            <p class="fw-normal my-auto" data-price="1590">A partir de 15.90€</p>
             <button id="customPizzaToggle" role="button" class="bg-primary text-white p-2">Personnaliser</button>
          </div>
       </div>  
@@ -82,7 +82,10 @@
          })
             .then(res => res.text())
             .then(res => {
-               window.modal.show('Pizza perso !', res, "Ajouter");
+               window.modal.show('Pizza perso !', res, "Ajouter (16.00 €)");
+               $(".modal-footer > button").click(() => {
+                  $("#select__ingredients").trigger("submit");
+               });
             })
       })
    </script>

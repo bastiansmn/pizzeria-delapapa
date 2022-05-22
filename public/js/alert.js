@@ -18,7 +18,7 @@ class Alert {
       clearTimeout(this.timeout);
       alert.text(textContent);
       alert.removeClass();
-      alert.addClass(["position-fixed", "bottom-0", "start-50", "translate-middle-x", "alert", "fade", "show", "alert-" + type]);
+      alert.addClass(["pe-none", "position-fixed", "bottom-0", "start-50", "translate-middle-x", "alert", "fade", "show", "alert-" + type]);
       alert.attr("role", "alert");
       this.timeout = setTimeout(() => {
          alert.removeClass("show");

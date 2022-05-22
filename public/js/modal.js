@@ -1,9 +1,8 @@
 class Modal {
    
-   show(title, htmlContent, footer) {
+   show(title, htmlContent) {
       $('.modal-title').html(title);
       $('.modal-body').html(htmlContent);
-      $('.modal-footer > button').html(footer);
       $('#staticBackdrop').modal('show');
    }
 

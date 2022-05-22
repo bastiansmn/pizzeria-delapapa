@@ -3,7 +3,7 @@
       <div class="mb-2">
          <label class="d-flex justify-content-between mb-1">
             Donnons-lui un nom :
-            <input required type="text" autocomplete="off" name="pizza__name" placeholder="..." class="ps-1">
+            <input required type="text" autocomplete="off" name="pizza__name" placeholder="..." class="ps-1 w-25">
          </label>
          <label class="d-flex justify-content-between">
             Et une taille :
@@ -33,44 +33,21 @@
             <% }) %>
          </div>
       <% } %>
+      <button class="addToCart p-1 bg-primary btn btn-primary m-auto" role="button" type="submit">
+         Ajouter (15.90 €)
+      </button>
    </form>
    <script>
-      class PizzaCustomization {
-         // Centimes par ingrédients
-         static INGR_PRICE = 50;
-         static BASE_PRICE = 1600;
+      window.custom = new PizzaCustomization();
 
-         constructor() {
-            this.ingredients = [];
-            this.currentPrice = PizzaCustomization.BASE_PRICE;
-         }
-
-         addIngredient(ingr_id) {
-            this.ingredients.push(ingr_id);
-         }
-
-         deleteIngredient(ingr_id) {
-            this.ingredients = this.ingredients.filter(ingr => ingr !== ingr_id);
-         }
-
-         getBasePrice(coefficient) {
-            return PizzaCustomization.BASE_PRICE * coefficient;
-         }
-
-         getIngrPrice() {
-            return PizzaCustomization.INGR_PRICE * this.ingredients.length;
-         }
-      }
-
-      const custom = new PizzaCustomization();
       $("#select__ingredients").on("submit", function(e) {
          e.preventDefault();
-         // TODO: Vérifier les champs requis
+         console.log(e);
          const data = $(this).serializeArray();
          const pizzaName = data.find(e => e.name === "pizza__name").value;
          const pizzaSize = data.find(e => e.name === "pizza__size").value;
          const ingredients = data.filter(e => e.value === 'on' && e.name.match(/\d+/gm));
-         console.log(pizzaSize);
+         
          if (!pizzaName || !pizzaSize) {
             window.alert.show("Veuillez donnez un nom et une taille à votre pizza", AlertType.DANGER);
             return;
@@ -96,11 +73,11 @@
             .then(res => {
                console.log(res);
             })
-         // TODO: Add pizza in cart
+            // TODO: Add pizza in cart
       });
       
       $("#pizza__size").on("change", function() {
-         $(".modal-footer > button").text(`Ajouter (${displayPrice(
+         $(".addToCart").text(`Ajouter (${displayPrice(
             custom.getBasePrice(this.children[this.selectedIndex].dataset.coefficient)
             + custom.getIngrPrice()
          )})`);
@@ -113,10 +90,10 @@
             custom.deleteIngredient(this.name);
          const pizzaSize = $("#pizza__size")[0];
             const coefficient = pizzaSize.children[pizzaSize.selectedIndex].dataset.coefficient;
-            $(".modal-footer > button").text(`Ajouter (${displayPrice(
+            $(".addToCart").text(`Ajouter (${displayPrice(
                custom.getBasePrice(coefficient)
                + custom.getIngrPrice()
             )})`);
-      })
+      });
    </script>
 </div>

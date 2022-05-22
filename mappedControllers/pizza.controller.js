@@ -10,14 +10,13 @@ module.exports =  (app, db) => {
          description: req.body.size,
       }
 
-      console.log(req.body.ingredients);
-      console.log(query.createCustomPizza(pizza));
       db.query(query.createCustomPizza(pizza))
          .then(result => {
-            console.log(result);
-            res.send({
-               pizza: "cc",
-            })
+            const pizza = result.rows[0];
+            req.body.ingredients.forEach(i => {
+               db.query(query.addIngredientToPizza(pizza.id, i.name, 1))
+            });
+            res.status(200).send(pizza)
          })
          .catch(err => {
             console.log(err);

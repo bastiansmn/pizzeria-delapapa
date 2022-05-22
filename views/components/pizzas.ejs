@@ -82,10 +82,7 @@
          })
             .then(res => res.text())
             .then(res => {
-               window.modal.show('Pizza perso !', res, "Ajouter (16.00 €)");
-               $(".modal-footer > button").click(() => {
-                  $("#select__ingredients").trigger("submit");
-               });
+               window.modal.show('Pizza perso !', res);
             })
       })
    </script>

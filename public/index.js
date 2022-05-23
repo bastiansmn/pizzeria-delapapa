@@ -1,7 +1,7 @@
 $(document).ready(() => {
    
    new PageRouter(
-      ["accueil", "menu"],
+      ["accueil", "menu","login"],
       ".main__content"
    );
 

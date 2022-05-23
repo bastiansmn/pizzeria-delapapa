@@ -1,9 +1,9 @@
 class Item {
    constructor(item_id, name, image, price, displayedPrice, type, opt="") {
-      this.item_id = item_id;
+      this.item_id = parseInt(item_id);
       this.name = name;
       this.image = image;
-      this.price = price;
+      this.price = parseInt(price);
       this.displayedPrice = displayedPrice;
       this.type = type;
       this.quantity = 1;
@@ -60,6 +60,7 @@ class Cart {
    }
 
    removeItem = (item_id) => {
+      item_id = parseInt(item_id);
       const item = this.#cart.find(i => i.item_id === item_id);
       this.#cart = this.#cart.filter(i => {
          return i.item_id !== item_id;

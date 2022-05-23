@@ -116,7 +116,6 @@ CREATE TABLE users (
 --
 
 
-
 --
 -- Sequences :
 --

@@ -42,3 +42,31 @@
       transform: translateX(0) var(--transformation);
    }
 }
+
+.appear-rtl {
+   animation: appear-rtl .8s ease-in-out forwards;
+}
+
+@keyframes appear-rtl {
+   from {
+      opacity: 0;
+      transform: translateX(5%);
+   }
+   to {
+      opacity: 1;
+      transform: translateX(0) var(--transformation);
+   }
+}
+
+.infinite-rotate {
+   animation: infinite-rotate 25s linear infinite;
+}
+
+@keyframes infinite-rotate {
+   from {
+      transform: rotate(0deg);
+   }
+   to {
+      transform: rotate(360deg);
+   }   
+}

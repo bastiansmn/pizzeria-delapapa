@@ -6,4 +6,8 @@ class Modal {
       $('#staticBackdrop').modal('show');
    }
 
+   close() {
+      $('#staticBackdrop').modal('hide');
+   }
+
 }

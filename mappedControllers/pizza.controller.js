@@ -3,7 +3,6 @@ const query = require("../queries/menu.query");
 module.exports =  (app, db) => {
    app.post("/pizza/createCustom", (req, res) => {
       // TODO
-      console.log(req.body);
       const pizza = {
          name: req.body.name,
          price: req.body.price,
@@ -19,7 +18,7 @@ module.exports =  (app, db) => {
             res.status(200).send(pizza)
          })
          .catch(err => {
-            console.log(err);
+            console.error(err);
             res.status(500).send({
                message: "Impossible de créer la pizza",
             })

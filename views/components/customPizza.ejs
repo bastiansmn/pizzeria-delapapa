@@ -42,7 +42,6 @@
 
       $("#select__ingredients").on("submit", function(e) {
          e.preventDefault();
-         console.log(e);
          const data = $(this).serializeArray();
          const pizzaName = data.find(e => e.name === "pizza__name").value;
          const pizzaSize = data.find(e => e.name === "pizza__size").value;
@@ -71,7 +70,16 @@
          })
             .then(res => res.json())
             .then(res => {
-               console.log(res);
+               cart.addToCart(new Item(
+                  res.id,
+                  res.name,
+                  "https://api.pizzahut.io/v1/content/fr-fr/fr-1/images/pizza/la-perso.a5ab8f5feea41b8a7d9ff5be59b8a1ed.1.jpg",
+                  res.price,
+                  displayPrice(res.price),
+                  0,
+                  res.description
+               ));
+               modal.close();
             })
             // TODO: Add pizza in cart
       });

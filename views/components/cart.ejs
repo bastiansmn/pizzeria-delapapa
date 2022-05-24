@@ -27,7 +27,9 @@
    </button>
 
    <script>
-      // TODO: Commander le panier
+      $(".submit__command").on("click", function() {
+         cart.orderCart();
+      });
 
       $(".deleteItem").click(function() {
          cart.removeItem(this.dataset.itemId);

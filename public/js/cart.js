@@ -101,4 +101,21 @@ class Cart {
       })
    }
 
+   orderCart() {
+      fetch("/components/order", {
+         method: "PUT",
+         headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem("access_token")
+         },
+         body: JSON.stringify({
+            cart: this.#cart
+         })
+      })
+         .then(res => res.text())
+         .then(res => {
+            modal.show("Validation de commande", res);
+         });
+   }
+
 }

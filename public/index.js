@@ -1,7 +1,7 @@
 $(document).ready(() => {
    
    window.pageRouter = new PageRouter(
-      ["accueil", "menu", "login", "register"],
+      ["accueil", "menu", "login", "register","delivery"],
       ".main__content"
    );
    window.cart = new Cart("#cart");

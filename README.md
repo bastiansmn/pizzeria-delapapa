@@ -1,6 +1,6 @@
 # Pizzeria Delapapa
 
-A demo of the project will be available as soon as possible.
+A demo of the project is currently available [here](https://pizzeria-delapapa.herokuapp.com/). The database is hosted on a free-tier server, so it might be slow to navigate in the app.
 
 ## Software architecture
 

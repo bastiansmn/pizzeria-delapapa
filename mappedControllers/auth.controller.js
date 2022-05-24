@@ -42,6 +42,12 @@ module.exports = (app, db) => {
       db.query(query.getByEmail(req.body.email))
          .then(result => {
             const user = result.rows[0];
+            if (!user) {
+               res.status(400).send({
+                  message: "Utilisateur inconnu",
+               })
+               return;
+            }
             const passwordIsValid = bcrypt.compareSync(
                req.body.password,
                user.password

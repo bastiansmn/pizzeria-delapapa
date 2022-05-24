@@ -25,5 +25,6 @@ require('./mappedControllers')(app, db);
 
 app.listen(process.env.PORT || 3000);
 
-// TODO: Page delivraison (vérif par webtoken si user est livreur) -> si oui lui envoyer le button d'affichage de la page de livraison
-// TODO: Inscription/connexion
+// TODO: Page delivraison
+// TODO: fix bug navbar
+// TODO: mailto a la fin d'une confirmation de commande et aussi lorsqu'une commmande est pris en charge par un livreur

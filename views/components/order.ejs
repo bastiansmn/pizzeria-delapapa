@@ -2,7 +2,7 @@
    <form id="adress__add" class="mb-3">
       <div class="form-group mb-3">
          <label class="w-100">
-            Email:
+            Addresse:
             <input class="form-control mt-1" type="text" name="name_adr" placeholder="Votre adresse" required>
          </label>
       </div>
@@ -55,7 +55,6 @@
                throw new Error("Error: " + status);
             }
             res.json().then(data => {
-               console.log(data);
                $("#address__list").append(
                   `<label class="w-100 d-flex justify-content-between">
                      ${data.name_adr}

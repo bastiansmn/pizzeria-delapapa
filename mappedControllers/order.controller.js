@@ -28,7 +28,6 @@ module.exports = (app, db) => {
          })
    });
    app.delete("/order/delete", (req, res) => {
-      console.log(req.body);
       db.query(query.deleteOrder(req.body.order_id))
          .then(() => {
             res.status(200).send({

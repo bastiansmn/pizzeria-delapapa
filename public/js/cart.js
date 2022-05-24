@@ -75,6 +75,11 @@ class Cart {
       }, 0);
    }
 
+   clearCart = () => {
+      this.#cart = [];
+      this.update();
+   }
+
    update = async () => {
       // Update component (display items in cart if needed, and repaint icon with cartSize)
       sessionStorage.setItem("cart", JSON.stringify(this.#cart));

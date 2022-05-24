@@ -71,6 +71,10 @@
    $("#order__command").on("submit", function(e) {
       e.preventDefault();
       const data = $(this).serializeArray();
+      if (!data.find(e => e.name === "address")) {
+         alert.show("Selectionnez une addresse de livraison", AlertType.WARNING);
+         return;
+      }
       fetch("/order/createOrder", {
          method: "POST",
          headers: {
@@ -113,7 +117,9 @@
                            throw new Error("Error: " + status);
                         }
                         res.json().then(jsonified => {
-                           console.log(jsonified);
+                           modal.close();
+                           alert.show("Commande effectuée", AlertType.SUCCESS);
+                           cart.clearCart();
                         })
                      })
                      .catch(err => {

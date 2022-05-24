@@ -63,7 +63,6 @@ module.exports = (app, db) => {
    app.post("/signup", async (req, res) => {
       req.body.password = bcrypt.hashSync(req.body.password, 8);
       const tempUser = (await db.query(query.getByEmail(req.body.email))).rows[0];
-      console.log(tempUser);
       if (tempUser) {
          return res.status(409).send({
             message: "Cet utilisateur existe déjà"
@@ -72,7 +71,7 @@ module.exports = (app, db) => {
       db.query(query.saveUser(req.body))
          .then(result => {
             const user = result.rows[0];
-            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "T3kdWp3PmYvrj9eJEaW9QFTDY3V7NmQ7", {
+            const token = jwt.sign({ user_id: user.id }, process.env.JWT_SECRET || "T3kdWp3PmYvrj9eJEaW9QFTDY3V7NmQ7", {
                expiresIn: 3600 * 24 * 31 // 1 Month
             });
             res.send({

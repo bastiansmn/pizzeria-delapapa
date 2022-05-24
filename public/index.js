@@ -1,7 +1,7 @@
 $(document).ready(() => {
    
    window.pageRouter = new PageRouter(
-      ["accueil", "menu", "login", "register","delivery"],
+      ["accueil", "menu", "login", "register", "deliverer__access"],
       ".main__content"
    );
    window.cart = new Cart("#cart");
@@ -28,7 +28,6 @@ $(document).ready(() => {
                   throw new Error("Token invalide");
                }
                res.text().then(data => {
-                  console.log(data);
                   $("#login").remove();
                   $("nav > div").append($(data));
                });

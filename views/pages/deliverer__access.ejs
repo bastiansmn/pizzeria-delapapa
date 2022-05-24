@@ -1,0 +1,49 @@
+<div class="container my-5">
+    <% orders.forEach((o, i) => { %>
+        <div class="accordion" id="accordionPanelsStayOpenExample__<%= o.id %>">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne__<%= i %>">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                Commande #<%= i+1 %>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne__<%= i %>" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                    <strong><%= o.date %></strong>
+                    <p>
+                        <%= o.name_adr %>
+                    </p>
+                    <button role="button" data-order-id="<%= o.id %>" class="btn btn-primary check__order">
+                        Marquer comme traitée
+                    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+    <% }) %>
+</div>
+
+<script>
+$(".check__order").on("click", function() {
+    var order_id = $(this).data("order-id");
+    fetch("/order/delete", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            order_id,
+        })
+    })
+        .then(res => {
+            const status = res.status;
+            if (status !== 200) {
+                throw new Error("Error: " + status);
+            }
+            res.json().then(data => {
+                alert.show(data.message, AlertType.SUCCESS);
+                $(`#accordionPanelsStayOpenExample__${order_id}`).remove();
+            })
+        })
+});
+</script>

@@ -2,7 +2,6 @@ const query = require("../queries/menu.query");
 
 module.exports =  (app, db) => {
    app.post("/pizza/createCustom", (req, res) => {
-      // TODO
       const pizza = {
          name: req.body.name,
          price: req.body.price,

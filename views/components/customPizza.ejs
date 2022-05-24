@@ -55,7 +55,7 @@
             window.alert.show("Selectionnez au moins 3 ingrédients !", AlertType.DANGER);
             return;
          }
-         // TODO: Add pizza in product table
+         
          fetch("/pizza/createCustom", {
             method: "POST",
             headers: {
@@ -81,7 +81,6 @@
                ));
                modal.close();
             })
-            // TODO: Add pizza in cart
       });
       
       $("#pizza__size").on("change", function() {

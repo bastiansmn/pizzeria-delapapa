@@ -83,7 +83,8 @@ CREATE TABLE prod_quant (
     quant integer,
     pizza_size text,
     sauce_name text,
-    drink_size text
+    drink_size text,
+    type text
 );
 
 CREATE TABLE product (
@@ -250,9 +251,6 @@ CREATE UNIQUE INDEX sauce_name_uindex ON sauce USING btree (name);
 ALTER TABLE ONLY "order"
     ADD CONSTRAINT address_id FOREIGN KEY (address_id) REFERENCES address(id);
 
-ALTER TABLE ONLY prod_quant
-    ADD CONSTRAINT drink_size FOREIGN KEY (drink_size) REFERENCES drink_size(size);
-
 ALTER TABLE ONLY link_menu_product
     ADD CONSTRAINT drink_size FOREIGN KEY (drink_size) REFERENCES drink_size(size);
 
@@ -269,7 +267,7 @@ ALTER TABLE ONLY menu_quant
     ADD CONSTRAINT menu_id FOREIGN KEY (menu_id) REFERENCES menus(id);
 
 ALTER TABLE ONLY deliverer
-    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id);
+    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY prod_quant
     ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id);
@@ -280,17 +278,11 @@ ALTER TABLE ONLY menu_quant
 ALTER TABLE ONLY ingr_quant
     ADD CONSTRAINT pizza_id FOREIGN KEY (pizza_id) REFERENCES product(id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY prod_quant
-    ADD CONSTRAINT pizza_size FOREIGN KEY (pizza_size) REFERENCES pizza_size(size);
-
 ALTER TABLE ONLY link_menu_product
     ADD CONSTRAINT pizza_size FOREIGN KEY (pizza_size) REFERENCES pizza_size(size);
 
 ALTER TABLE ONLY prod_quant
     ADD CONSTRAINT product_id FOREIGN KEY (product_id) REFERENCES product(id);
-
-ALTER TABLE ONLY prod_quant
-    ADD CONSTRAINT sauce_name FOREIGN KEY (sauce_name) REFERENCES sauce(name);
 
 ALTER TABLE ONLY address
     ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES users(id);

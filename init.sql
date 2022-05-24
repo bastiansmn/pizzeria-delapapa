@@ -267,13 +267,13 @@ ALTER TABLE ONLY menu_quant
     ADD CONSTRAINT menu_id FOREIGN KEY (menu_id) REFERENCES menus(id);
 
 ALTER TABLE ONLY deliverer
-    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id) ON DELETE CASCADE;
+    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id);
 
 ALTER TABLE ONLY prod_quant
-    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id);
+    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY menu_quant
-    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id);
+    ADD CONSTRAINT order_id FOREIGN KEY (order_id) REFERENCES "order"(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY ingr_quant
     ADD CONSTRAINT pizza_id FOREIGN KEY (pizza_id) REFERENCES product(id) ON DELETE CASCADE;

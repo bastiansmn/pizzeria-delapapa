@@ -1,0 +1,123 @@
+<div class="container">
+   <form id="adress__add" class="mb-3">
+      <div class="form-group mb-3">
+         <label class="w-100">
+            Email:
+            <input class="form-control mt-1" type="text" name="name_adr" placeholder="Votre adresse" required>
+         </label>
+      </div>
+      <div class="form-group mb-3">
+         <label class="w-100">
+            Informations complémentaires:
+            <input class="form-control mt-1" type="text" name="opt_info" placeholder="Informations complémentaires">
+         </label>
+      </div>
+      <button type="submit" class="btn btn-primary">Ajouter l'adresse</button>
+   </form>
+   <div class="separator bg-dark w-100 my-3" style="height: 2px;"></div>
+   <form id="order__command">
+      <div class="from-group mb-lg-3" id="address__list">
+         <h1 class="fs-5">Selectionnez votre addresse de livraison:</h1>
+         <% address.forEach(addr => { %>
+            <label class="w-100 d-flex justify-content-between">
+               <%= addr.name_adr %>
+               <input required type="radio" name="address" value="<%= addr.id %>">
+            </label>
+         <% }) %>
+      </div>
+      <% cart.forEach(i => { %>
+         <input type="hidden" name="item_id" value="<%= i.item_id %>" data-quant="<%= i.quantity %>" data-type="<%= i.type %>" data-opt="<%= i.opt %>">
+      <% }) %>
+      <button role="button" class="btn btn-primary">
+         Payer (<%= total %>)
+      </button>
+   </form>
+</div>
+
+<script>
+   $("#adress__add").on("submit", function(e) {
+      e.preventDefault();
+      // Add in bdd
+      fetch("/user/createAddress", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem("access_token")
+         },
+         body: JSON.stringify({
+            name_adr: $("input[name=name_adr]").val(),
+            opt_info: $("input[name=opt_info]").val()
+         })
+      })
+         .then(res => {
+            const status = res.status;
+            if (status !== 200) {
+               throw new Error("Error: " + status);
+            }
+            res.json().then(data => {
+               console.log(data);
+               $("#address__list").append(
+                  `<label class="w-100 d-flex justify-content-between">
+                     ${data.name_adr}
+                     <input required type="radio" name="address" value="${data.id}">
+                  </label>`
+               );
+               $("#adress__add input[name='name_adr']").val("");
+            })
+         })
+      
+   });
+
+   $("#order__command").on("submit", function(e) {
+      e.preventDefault();
+      const data = $(this).serializeArray();
+      fetch("/order/createOrder", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json"
+         },
+         body: JSON.stringify({
+            addressId: parseInt(data.find(e => e.name === "address").value),
+         })
+      })
+         .then(res => {
+            const status = res.status;
+            if (status !== 200) {
+               alert.show("Error" + status, AlertType.DANGER)
+               throw new Error("Error: " + status);
+            }
+            res.json().then(jsonData => {
+               console.log(data);
+               const orderID = data.id;
+               const inputs = $("input[type=hidden][name=item_id]");
+               inputs.each(function() {
+                  const dataset = $(this).data();
+                  const item_id = $(this).val();
+                  fetch("/order/addItem", {
+                     method: "POST",
+                     headers: {
+                        "Content-Type": "application/json"
+                     },
+                     body: JSON.stringify({
+                        order_id: orderID,
+                        product_id: item_id,
+                        quant: dataset.quant,
+                        pizza_size: dataset.type === "pizza" ? dataset.opt : "",
+                        sauce_name: dataset.type === "starter" ? dataset.opt : "",
+                        drink_size: dataset.type === "drink" ? dataset.opt : ""
+                     })
+                  })
+                     .then(addedItem => {
+                        console.log(addedItem);
+                     })
+                     .catch(err => {
+                        console.error(err);
+                     })
+               })
+               .catch(err => {
+                  console.error(err);
+               })
+            })
+         })
+   });
+</script>

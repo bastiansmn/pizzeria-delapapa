@@ -12,5 +12,18 @@ module.exports = {
                resolve(null);
             });
       });
-   }
+   },
+
+   getAddressOfUser: (db, user_id) => {
+      return new Promise(resolve => {
+         db.query(query.getAdressOfuser(user_id))
+            .then(res => {
+               resolve(res.rows);
+            })
+            .catch(err => {
+               console.error(err);
+               resolve(null);
+            });
+      });
+   },
 }

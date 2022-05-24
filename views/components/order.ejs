@@ -87,9 +87,8 @@
                throw new Error("Error: " + status);
             }
             res.json().then(jsonData => {
-               console.log(data);
-               const orderID = data.id;
                const inputs = $("input[type=hidden][name=item_id]");
+               var order_id = jsonData[0].id;
                inputs.each(function() {
                   const dataset = $(this).data();
                   const item_id = $(this).val();
@@ -99,24 +98,33 @@
                         "Content-Type": "application/json"
                      },
                      body: JSON.stringify({
-                        order_id: orderID,
+                        order_id: order_id,
                         product_id: item_id,
                         quant: dataset.quant,
-                        pizza_size: dataset.type === "pizza" ? dataset.opt : "",
-                        sauce_name: dataset.type === "starter" ? dataset.opt : "",
-                        drink_size: dataset.type === "drink" ? dataset.opt : ""
+                        type: dataset.type,
+                        pizza_size: dataset.type === "pizza" ? dataset.opt : null,
+                        sauce_name: dataset.type === "starter" ? dataset.opt : null,
+                        drink_size: dataset.type === "drink" ? dataset.opt : null
                      })
                   })
-                     .then(addedItem => {
-                        console.log(addedItem);
+                     .then(res => {
+                        const status = res.status;
+                        if (status !== 200) {
+                           throw new Error("Error: " + status);
+                        }
+                        res.json().then(jsonified => {
+                           console.log(jsonified);
+                        })
                      })
                      .catch(err => {
                         console.error(err);
                      })
+                     .then(() => {
+                        window.order_id = null;
+                     })
                })
-               .catch(err => {
-                  console.error(err);
-               })
+            }).catch(err => {
+               console.error(err);
             })
          })
    });

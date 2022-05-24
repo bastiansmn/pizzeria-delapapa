@@ -1,0 +1,20 @@
+<div class="container mt-2">
+   <div class="row">
+      <h1>Vos informations :</h1>
+      <ul>
+         <li>Nom: <%= user.name %></li>
+         <li>Prénom: <%= user.lastname %></li>
+         <li>Mail: <%= user.email %></li>
+         <li>Numéro de téléphone: <%= user.phone_num %></li>
+      </ul>
+      <button id="disconnect" role="button">
+         Déconnexion
+      </button>
+   </div>
+</div>
+<script>
+   $("#disconnect").on("click", () => {
+      localStorage.clear();
+      window.location.href = "/";
+   })
+</script>

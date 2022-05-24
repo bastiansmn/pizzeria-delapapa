@@ -1,5 +1,5 @@
 module.exports = (app, db) => {
-    app.get(
+    app.put(
        "/pages/register",
        (_req, res) => {
           res.render("pages/register");
